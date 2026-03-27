@@ -39,88 +39,113 @@ async function getDatabase() {
 
 // ================= LOAD PHOTOS =================
 async function loadPhotos(folderId) {
-  const url =
-   `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${API_KEY}&fields=files(id,name,mimeType)`;
-
-  const res = await fetch(url);
-  const data = await res.json();
   const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "<p style='text-align:center;'>Memuat foto...</p>";
 
-  data.files.forEach(file => {
-  if (!file.mimeType.includes("image")) return;
+  let allFiles = [];
+  let pageToken = "";
 
-  const card = document.createElement("div");
-  card.className = "photoCard";
+  try {
+    while (true) {
+      const url = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents&key=${API_KEY}&fields=nextPageToken,files(id,name,mimeType)&pageSize=1000${pageToken ? `&pageToken=${pageToken}` : ""}`;
 
-  const img = document.createElement("img");
-  img.src = `https://drive.google.com/thumbnail?id=${file.id}&sz=w1000`;
-  img.className = "photo";
-  img.onclick = () => openPreview(img.src);
+      const res = await fetch(url);
+      const data = await res.json();
 
-  // ===== CHECKBOX EDIT =====
-  const editBox = document.createElement("input");
-  editBox.type = "checkbox";
-  editBox.checked = selectedEdit.has(file.name);
-
-  editBox.onchange = () => {
-    if (editBox.checked) {
-      if (selectedEdit.size >= MAX_EDIT) {
-        alert("Jatah edit habis!");
-        editBox.checked = false;
+      if (!data.files) {
+        console.error("Gagal load file:", data);
+        gallery.innerHTML = "<p style='text-align:center;color:red;'>Gagal memuat foto.</p>";
         return;
       }
-      selectedEdit.add(file.name);
-    } else {
-      selectedEdit.delete(file.name);
+
+      allFiles = allFiles.concat(data.files);
+
+      if (!data.nextPageToken) break;
+      pageToken = data.nextPageToken;
     }
+
+    gallery.innerHTML = "";
+
+    allFiles.forEach(file => {
+      if (!file.mimeType.includes("image")) return;
+
+      const card = document.createElement("div");
+      card.className = "photoCard";
+
+      const img = document.createElement("img");
+      img.src = `https://drive.google.com/thumbnail?id=${file.id}&sz=w1000`;
+      img.className = "photo";
+      img.loading = "lazy";
+      img.onclick = () => openPreview(`https://drive.google.com/thumbnail?id=${file.id}&sz=w2000`);
+
+      // ===== CHECKBOX EDIT =====
+      const editBox = document.createElement("input");
+      editBox.type = "checkbox";
+      editBox.checked = selectedEdit.has(file.name);
+
+      editBox.onchange = () => {
+        if (editBox.checked) {
+          if (selectedEdit.size >= MAX_EDIT) {
+            alert("Jatah edit habis!");
+            editBox.checked = false;
+            return;
+          }
+          selectedEdit.add(file.name);
+        } else {
+          selectedEdit.delete(file.name);
+        }
+        updateCounter();
+      };
+
+      // ===== CHECKBOX CETAK =====
+      const cetakBox = document.createElement("input");
+      cetakBox.type = "checkbox";
+      cetakBox.checked = selectedCetak.has(file.name);
+
+      cetakBox.onchange = () => {
+        if (cetakBox.checked) {
+          if (selectedCetak.size >= MAX_CETAK) {
+            alert("Jatah cetak habis!");
+            cetakBox.checked = false;
+            return;
+          }
+          selectedCetak.add(file.name);
+        } else {
+          selectedCetak.delete(file.name);
+        }
+        updateCounter();
+      };
+
+      const labelEdit = document.createElement("label");
+      labelEdit.innerHTML = "Edit ";
+      labelEdit.appendChild(editBox);
+
+      const labelCetak = document.createElement("label");
+      labelCetak.innerHTML = "Cetak ";
+      labelCetak.appendChild(cetakBox);
+
+      const controls = document.createElement("div");
+      controls.className = "controls";
+      controls.appendChild(labelEdit);
+      controls.appendChild(labelCetak);
+
+      const fileName = document.createElement("div");
+      fileName.className = "filename";
+      fileName.innerText = file.name;
+
+      card.appendChild(img);
+      card.appendChild(fileName);
+      card.appendChild(controls);
+      gallery.appendChild(card);
+    });
+
     updateCounter();
-  };
 
-  // ===== CHECKBOX CETAK =====
-  const cetakBox = document.createElement("input");
-  cetakBox.type = "checkbox";
-  cetakBox.checked = selectedCetak.has(file.name);
-
-  cetakBox.onchange = () => {
-    if (cetakBox.checked) {
-      if (selectedCetak.size >= MAX_CETAK) {
-        alert("Jatah cetak habis!");
-        cetakBox.checked = false;
-        return;
-      }
-      selectedCetak.add(file.name);
-    } else {
-      selectedCetak.delete(file.name);
-    }
-    updateCounter();
-  };
-
-  const labelEdit = document.createElement("label");
-  labelEdit.innerHTML = "Edit ";
-  labelEdit.appendChild(editBox);
-
-  const labelCetak = document.createElement("label");
-  labelCetak.innerHTML = "Cetak ";
-  labelCetak.appendChild(cetakBox);
-
-  const controls = document.createElement("div");
-  controls.className = "controls";
-  controls.appendChild(labelEdit);
-  controls.appendChild(labelCetak);
-
-  const fileName = document.createElement("div");
-  fileName.className = "filename";
-  fileName.innerText = file.name;
-
-  card.appendChild(img);
-  card.appendChild(fileName);
-  card.appendChild(controls);
-  gallery.appendChild(card);
-});
-
-  updateCounter();
+  } catch (err) {
+    console.error("Error loadPhotos:", err);
+    gallery.innerHTML = "<p style='text-align:center;color:red;'>Terjadi kesalahan saat memuat foto.</p>";
+  }
 }
-
 // ================= HANDLE CLICK =================
 function handleClick(fileName, img) {
   // klik 1 = edit
