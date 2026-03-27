@@ -14,11 +14,6 @@ let selectedCetak = new Set();
 let MAX_EDIT = 0;
 let MAX_CETAK = 0;
 
-// ===== GALLERY STATE =====
-let allPhotos = [];
-let renderedCount = 0;
-const LOAD_BATCH = 60;
-let isLoadingMore = false;
 // ================= LOAD DATABASE =================
 async function getDatabase() {
   const res = await fetch(SHEET_CSV);
@@ -47,7 +42,7 @@ async function loadPhotos(folderId) {
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "<p style='text-align:center;'>Memuat foto...</p>";
 
-  let files = [];
+  let allFiles = [];
   let pageToken = "";
 
   try {
@@ -63,109 +58,11 @@ async function loadPhotos(folderId) {
         return;
       }
 
-      files = files.concat(data.files.filter(file => file.mimeType.includes("image")));
+      allFiles = allFiles.concat(data.files);
 
       if (!data.nextPageToken) break;
       pageToken = data.nextPageToken;
     }
-
-    // simpan semua foto ke state global
-    allPhotos = files;
-    renderedCount = 0;
-    gallery.innerHTML = "";
-
-    renderNextBatch();
-    
-
-  } catch (err) {
-    console.error("Error loadPhotos:", err);
-    gallery.innerHTML = "<p style='text-align:center;color:red;'>Terjadi kesalahan saat memuat foto.</p>";
-  }
-}
-
-    function renderNextBatch() {
-  if (isLoadingMore) return;
-  isLoadingMore = true;
-    
-
-  const gallery = document.getElementById("gallery");
-  const nextPhotos = allPhotos.slice(renderedCount, renderedCount + LOAD_BATCH);
-
-  nextPhotos.forEach(file => {
-    const card = document.createElement("div");
-    card.className = "photoCard";
-
-    const img = document.createElement("img");
-    img.src = `https://drive.google.com/thumbnail?id=${file.id}&sz=w1000`;
-    img.className = "photo";
-    img.loading = "lazy";
-    img.onclick = () => openPreview(`https://drive.google.com/thumbnail?id=${file.id}&sz=w2000`);
-
-
-    // ===== CHECKBOX EDIT =====
-    const editBox = document.createElement("input");
-    editBox.type = "checkbox";
-    editBox.checked = selectedEdit.has(file.name);
-
-    editBox.onchange = () => {
-      if (editBox.checked) {
-        if (selectedEdit.size >= MAX_EDIT) {
-          alert("Jatah edit habis!");
-          editBox.checked = false;
-          return;
-        }
-        selectedEdit.add(file.name);
-      } else {
-        selectedEdit.delete(file.name);
-      }
-      updateCounter();
-    };
-
-    // ===== CHECKBOX CETAK =====
-    const cetakBox = document.createElement("input");
-    cetakBox.type = "checkbox";
-    cetakBox.checked = selectedCetak.has(file.name);
-
-    cetakBox.onchange = () => {
-      if (cetakBox.checked) {
-        if (selectedCetak.size >= MAX_CETAK) {
-          alert("Jatah cetak habis!");
-          cetakBox.checked = false;
-          return;
-        }
-        selectedCetak.add(file.name);
-      } else {
-        selectedCetak.delete(file.name);
-      }
-      updateCounter();
-    };
-
-    const labelEdit = document.createElement("label");
-    labelEdit.innerHTML = "Edit ";
-    labelEdit.appendChild(editBox);
-
-    const labelCetak = document.createElement("label");
-    labelCetak.innerHTML = "Cetak ";
-    labelCetak.appendChild(cetakBox);
-
-    const controls = document.createElement("div");
-    controls.className = "controls";
-    controls.appendChild(labelEdit);
-    controls.appendChild(labelCetak);
-
-    const fileName = document.createElement("div");
-    fileName.className = "filename";
-    fileName.innerText = file.name;
-
-    card.appendChild(img);
-    card.appendChild(fileName);
-    card.appendChild(controls);
-    gallery.appendChild(card);
-  });
-
-  renderedCount += nextPhotos.length;
-  isLoadingMore = false;
-}
 
     gallery.innerHTML = "";
 
@@ -249,6 +146,7 @@ async function loadPhotos(folderId) {
     gallery.innerHTML = "<p style='text-align:center;color:red;'>Terjadi kesalahan saat memuat foto.</p>";
   }
 }
+
 // ================= HANDLE CLICK =================
 function handleClick(fileName, img) {
   // klik 1 = edit
@@ -343,14 +241,6 @@ if(clientName){
 
 init();
 }); // ← penutup DOMContentLoaded
-
-window.addEventListener("scroll", () => {
-  const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 800;
-
-  if (nearBottom && renderedCount < allPhotos.length) {
-    renderNextBatch();
-  }
-});
 window.addEventListener("scroll", () => {
   const header = document.getElementById("mainHeader");
   if (window.scrollY > 60) {
