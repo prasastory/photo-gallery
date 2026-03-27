@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Gallery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header id="mainHeader">
+    <div class="brandWrap">
+      <img src="logo.png" alt="Logo Brand" class="brandLogo">
+      <div class="brandText">
+        <h1>Wedding Gallery</h1>
+        <p>Pilih foto untuk Cetak dan Edit</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    Client: <strong id="clientName">Memuat...</strong>
+  </div>
+
+  <div id="gallery" class="gallery"></div>
+
+  <!-- Floating Bottom Action Bar -->
+  <div class="bottomBar">
+    <div class="badgeWrap">
+      <div class="badgeItem" id="editBadge">Edit tersisa: 0</div>
+      <div class="badgeItem" id="cetakBadge">Cetak tersisa: 0</div>
+    </div>
+    <button id="saveBtn">Simpan Pilihan</button>
+  </div>
+
+  <div id="previewModal">
+    <span id="closePreview">&times;</span>
+    <img id="previewImg" alt="Preview Foto">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

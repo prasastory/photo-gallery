@@ -1,0 +1,427 @@
+/* ===============================
+   GLOBAL
+================================= */
+:root{
+  --bg:#f8f6f2;
+  --card:#ffffff;
+  --text:#2f2a26;
+  --sub:#8b7f75;
+  --gold:#c8a96b;
+  --gold-dark:#b48f4e;
+  --line:#eee7df;
+  --shadow:0 10px 30px rgba(0,0,0,0.06);
+  --radius:18px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:'Segoe UI', system-ui, sans-serif;
+  background:linear-gradient(to bottom, #fcfbf9, var(--bg));
+  color:var(--text);
+}
+
+/* ===============================
+   HEADER
+================================= */
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  padding:22px 20px;
+  transition:all 0.28s ease;
+}
+
+.brandWrap{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  transition:all 0.28s ease;
+}
+
+.brandLogo{
+  width:100px;
+  height:100px;
+  object-fit:contain;
+  transition:all 0.28s ease;
+}
+
+.brandText h1{
+  margin:0;
+  font-size:34px;
+  font-weight:700;
+  transition:all 0.28s ease;
+}
+
+.brandText p{
+  margin:6px 0 0;
+  color:var(--sub);
+  font-size:15px;
+  transition:all 0.28s ease;
+}
+
+/* Saat scroll */
+header.shrink{
+  padding:10px 18px;
+}
+
+header.shrink .brandLogo{
+  width:60px;
+  height:60px;
+}
+
+header.shrink .brandText h1{
+  font-size:22px;
+}
+
+header.shrink .brandText p{
+  font-size:12px;
+  margin-top:2px;
+}
+
+/* ===============================
+   TOOLBAR / CLIENT BOX
+================================= */
+.toolbar{
+  margin:24px auto 18px;
+  width:fit-content;
+  background:var(--card);
+  padding:14px 22px;
+  border-radius:999px;
+  box-shadow:var(--shadow);
+  font-size:15px;
+  font-weight:600;
+  color:var(--sub);
+  text-align:center;
+  border:1px solid var(--line);
+}
+
+.toolbar #clientName{
+  margin-left:8px;
+  color:var(--text);
+  font-weight:700;
+}
+
+/* ===============================
+   GALLERY
+================================= */
+#gallery{
+  column-count:4;
+  column-gap:22px;
+  padding:20px;
+  max-width:1500px;
+  margin:auto;
+  padding-bottom:120px; /* agar tidak ketutup bottom bar */
+}
+
+@media (max-width:1100px){
+  #gallery{ column-count:3; }
+}
+
+@media (max-width:760px){
+  #gallery{
+    column-count:3;
+    column-gap:10px;
+    padding:10px;
+    padding-bottom:120px;
+  }
+
+  .photoCard{
+    margin-bottom:10px;
+    border-radius:12px;
+  }
+
+  .filename{
+    font-size:11px;
+    padding:8px 10px 4px;
+  }
+
+  .controls{
+    flex-direction:column;
+    gap:8px;
+    padding:10px;
+  }
+
+  .controls label{
+    width:100%;
+    font-size:12px;
+    padding:8px 10px;
+  }
+}
+
+@media (max-width:520px){
+  #gallery{
+    column-count:3;
+    column-gap:8px;
+    padding:8px;
+    padding-bottom:130px;
+  }
+
+  .photoCard{
+    margin-bottom:8px;
+    border-radius:10px;
+  }
+
+  .photo{
+    border-radius:0;
+  }
+
+  .filename{
+    font-size:10px;
+    padding:6px 8px 4px;
+  }
+
+  .controls{
+    flex-direction:column;
+    gap:6px;
+    padding:8px;
+  }
+
+  .controls label{
+    font-size:11px;
+    padding:7px 8px;
+    border-radius:10px;
+  }
+
+  .controls input[type="checkbox"]{
+    transform:scale(1);
+  }
+}
+
+/* ===============================
+   PHOTO CARD
+================================= */
+.photoCard{
+  break-inside:avoid;
+  margin-bottom:22px;
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition:all 0.25s ease;
+  border:1px solid rgba(0,0,0,0.03);
+}
+
+.photoCard:hover{
+  transform:translateY(-5px);
+  box-shadow:0 16px 35px rgba(0,0,0,0.09);
+}
+
+.photo{
+  width:100%;
+  height:auto;
+  display:block;
+  cursor:pointer;
+  transition:transform 0.4s ease;
+}
+
+.photoCard:hover .photo{
+  transform:scale(1.03);
+}
+
+/* ===============================
+   FILE NAME
+================================= */
+.filename{
+  padding:12px 16px 6px;
+  font-size:8px;
+  color:var(--sub);
+  word-break:break-word;
+  line-height:1.4;
+}
+
+/* ===============================
+   CONTROLS
+================================= */
+.controls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:6px;
+  padding:5px 6px 6px;
+  border-top:1px solid var(--line);
+}
+
+.controls label{
+  display:flex;
+  align-items:center;
+  gap:2px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:650;
+  color:var(--text);
+  background:#faf8f5;
+  padding:2px 4px;
+  border-radius:4px;
+  flex:1;
+  justify-content:center;
+  transition:0.2s ease;
+  border:1px solid transparent;
+}
+
+.controls label:hover{
+  background:#f4efe8;
+  border-color:#e7dccd;
+}
+
+.controls input[type="checkbox"]{
+  transform:scale(1.2);
+  cursor:pointer;
+  accent-color:var(--gold);
+}
+
+/* ===============================
+   FLOATING BOTTOM BAR
+================================= */
+.bottomBar{
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:calc(100% - 24px);
+  max-width:760px;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 16px 40px rgba(0,0,0,0.10);
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  z-index:120;
+}
+
+.badgeWrap{
+  display:flex;
+  gap:10px;
+  flex-wrap:nowrap;
+}
+
+.badgeItem{
+  background:#f7f2ea;
+  color:var(--text);
+  padding:5px 5px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:700;
+  border:1px solid #eadfce;
+  white-space:wrap;
+}
+
+#saveBtn{
+  border:none;
+  border-radius:500px;
+  background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color:white;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 12px 25px rgba(200,169,107,0.28);
+  transition:all 0.25s ease;
+  padding:14px 22px;
+  white-space:nowrap;
+}
+
+#saveBtn:hover{
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 16px 30px rgba(200,169,107,0.35);
+}
+
+@media (max-width:640px){
+  .bottomBar{
+    flex-direction:row;
+    align-items:stretch;
+    padding:14px;
+  }
+
+  .badgeWrap{
+    justify-content:center;
+  }
+
+  #saveBtn {
+      width: 100%
+569px
+    }
+
+  .brandWrap{
+    justify-content:center;
+    text-align:center;
+  }
+
+  .brandText h1{
+    font-size:28px;
+  }
+
+  .brandText p{
+    font-size:13px;
+  }
+}
+
+/* ===============================
+   PREVIEW MODAL
+================================= */
+#previewModal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(18,18,18,0.92);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+  animation:fadeIn 0.25s ease;
+  padding:20px;
+}
+
+#previewModal img{
+  max-width:95%;
+  max-height:92%;
+  border-radius:18px;
+  box-shadow:0 15px 50px rgba(0,0,0,0.35);
+  animation:zoomIn 0.25s ease;
+}
+
+#closePreview{
+  position:absolute;
+  top:20px;
+  right:28px;
+  font-size:42px;
+  color:white;
+  cursor:pointer;
+  opacity:0.85;
+  transition:0.2s ease;
+}
+
+#closePreview:hover{
+  opacity:1;
+  transform:scale(1.1);
+}
+
+/* ===============================
+   ANIMATION
+================================= */
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes zoomIn{
+  from{
+    opacity:0;
+    transform:scale(0.96);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
