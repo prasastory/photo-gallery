@@ -426,13 +426,4 @@ header.shrink .brandText p{
   }
 }
 
-/* ===============================
-   LOAD MORE INDICATOR
-================================= */
-#loadMoreIndicator{
-  text-align:center;
-  padding:20px;
-  color:#8b7f75;
-  font-size:14px;
-  display:none;
-}
+
