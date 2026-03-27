@@ -75,6 +75,7 @@ async function loadPhotos(folderId) {
     gallery.innerHTML = "";
 
     renderNextBatch();
+    
 
   } catch (err) {
     console.error("Error loadPhotos:", err);
@@ -85,6 +86,8 @@ async function loadPhotos(folderId) {
     function renderNextBatch() {
   if (isLoadingMore) return;
   isLoadingMore = true;
+        const indicator = document.getElementById("loadMoreIndicator");
+if (indicator) indicator.style.display = "block";
 
   const gallery = document.getElementById("gallery");
   const nextPhotos = allPhotos.slice(renderedCount, renderedCount + LOAD_BATCH);
@@ -98,6 +101,13 @@ async function loadPhotos(folderId) {
     img.className = "photo";
     img.loading = "lazy";
     img.onclick = () => openPreview(`https://drive.google.com/thumbnail?id=${file.id}&sz=w2000`);
+
+      renderedCount += nextPhotos.length;
+isLoadingMore = false;
+
+if (indicator) {
+  indicator.style.display = renderedCount < allPhotos.length ? "block" : "none";
+}
 
     // ===== CHECKBOX EDIT =====
     const editBox = document.createElement("input");
