@@ -174,11 +174,26 @@ function handleClick(fileName, img) {
 
 // ================= COUNTER =================
 function updateCounter() {
-  const sisaEdit = MAX_EDIT - selectedEdit.size;
-  const sisaCetak = MAX_CETAK - selectedCetak.size;
+  const editBadge = document.getElementById("editBadge");
+  const cetakBadge = document.getElementById("cetakBadge");
 
-  document.getElementById("editBadge").innerText = `Sisa Edit: ${sisaEdit}`;
-  document.getElementById("cetakBadge").innerText = `Sisa Cetak: ${sisaCetak}`;
+  // ===== EDIT =====
+  if (MAX_EDIT <= 0) {
+    editBadge.style.display = "none";
+  } else {
+    editBadge.style.display = "inline-block";
+    const sisaEdit = MAX_EDIT - selectedEdit.size;
+    editBadge.innerText = `Sisa Edit: ${sisaEdit}`;
+  }
+
+  // ===== CETAK =====
+  if (MAX_CETAK <= 0) {
+    cetakBadge.style.display = "none";
+  } else {
+    cetakBadge.style.display = "inline-block";
+    const sisaCetak = MAX_CETAK - selectedCetak.size;
+    cetakBadge.innerText = `Sisa Cetak: ${sisaCetak}`;
+  }
 }
 
 // ================= SAVE =================
@@ -211,6 +226,7 @@ async function init() {
 
   MAX_EDIT = client.maxEdit;
   MAX_CETAK = client.maxCetak;
+    updateCounter(); // supaya langsung hide jika 0 dari awal
   selectedEdit = new Set(client.selectedEdit);
   selectedCetak = new Set(client.selectedCetak);
 
