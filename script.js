@@ -249,7 +249,6 @@ async function init() {
   MAX_EDIT = client.maxEdit;
   MAX_CETAK = client.maxCetak;
     updateCounter(); // supaya langsung hide jika 0 dari awal
-    checkPreviewMode();
   selectedEdit = new Set(client.selectedEdit);
   selectedCetak = new Set(client.selectedCetak);
 
