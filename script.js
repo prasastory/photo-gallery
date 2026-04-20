@@ -197,6 +197,27 @@ function updateCounter() {
   }
 }
 
+    function checkPreviewMode() {
+  const saveBtn = document.getElementById("saveBtn");
+
+  // jika tidak ada jatah sama sekali → mode preview
+  if (MAX_EDIT <= 0 && MAX_CETAK <= 0) {
+    saveBtn.style.display = "none";
+
+    // optional: tampilkan tulisan mode preview
+    const previewInfo = document.createElement("div");
+    previewInfo.id = "previewInfo";
+    previewInfo.innerText = "Mode Preview • Foto tidak perlu dipilih";
+    previewInfo.style.textAlign = "center";
+    previewInfo.style.margin = "10px";
+    previewInfo.style.fontWeight = "600";
+    previewInfo.style.color = "#888";
+
+    const header = document.getElementById("mainHeader");
+    header.appendChild(previewInfo);
+  }
+}
+
 // ================= SAVE =================
 document.getElementById("saveBtn").onclick = async () => {
 
@@ -228,6 +249,7 @@ async function init() {
   MAX_EDIT = client.maxEdit;
   MAX_CETAK = client.maxCetak;
     updateCounter(); // supaya langsung hide jika 0 dari awal
+    checkPreviewMode();
   selectedEdit = new Set(client.selectedEdit);
   selectedCetak = new Set(client.selectedCetak);
 
