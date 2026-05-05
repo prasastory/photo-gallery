@@ -39,6 +39,36 @@
     <img id="previewImg" alt="Preview Foto">
   </div>
 
+  <!-- Loading Modal -->
+  <div id="loadingModal" class="modal-overlay">
+    <div class="modal-content modal-loading">
+      <div class="spinner"></div>
+      <p>Menyimpan pilihan...</p>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-content modal-success">
+      <div class="success-icon">✓</div>
+      <h3>Berhasil!</h3>
+      <p>Pilihan Anda berhasil disimpan.</p>
+      <button class="modal-btn" onclick="document.getElementById('successModal').style.display='none'">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Quota Limit Modal -->
+  <div id="quotaModal" class="modal-overlay">
+    <div class="modal-content modal-quota">
+      <h3 id="quotaTitle">Jatah Habis</h3>
+      <p id="quotaMessage">Anda telah mencapai batas maksimal pilihan.</p>
+      <div class="quota-hint">
+        <p><strong>💡 Tips:</strong> Silahkan ganti pilihan Anda dengan menghilangkan centang pada foto yang tidak ingin dipilih, kemudian centang foto lain yang Anda inginkan.</p>
+      </div>
+      <button class="modal-btn" onclick="document.getElementById('quotaModal').style.display='none'">Mengerti</button>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
