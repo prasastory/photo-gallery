@@ -279,6 +279,34 @@ header.shrink .brandText p{
   accent-color:var(--gold);
 }
 
+.statusLabel{
+  padding:10px 14px 8px;
+  font-size:12px;
+  color:#5f4a21;
+  font-weight:700;
+  background:#faf7ef;
+  border-bottom:1px solid var(--line);
+  text-align:center;
+}
+
+.photoCard.edit-selected{
+  border-color:rgba(200,169,107,0.45);
+  box-shadow:0 18px 45px rgba(200,169,107,0.18);
+}
+
+.photoCard.cetak-selected{
+  border-color:rgba(34,114,209,0.35);
+  box-shadow:0 18px 45px rgba(34,114,209,0.15);
+}
+
+.noOptions{
+  width:100%;
+  font-size:12px;
+  color:var(--sub);
+  text-align:center;
+  padding:8px 0;
+}
+
 /* ===============================
    FLOATING BOTTOM BAR
 ================================= */
@@ -350,9 +378,8 @@ header.shrink .brandText p{
   }
 
   #saveBtn {
-      width: 100%
-569px
-    }
+    width: 100%;
+  }
 
   .brandWrap{
     justify-content:center;
@@ -424,6 +451,152 @@ header.shrink .brandText p{
     opacity:1;
     transform:scale(1);
   }
+}
+
+/* ===============================
+   MODAL OVERLAY
+================================= */
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeIn 0.2s ease;
+}
+
+.modal-content{
+  background:white;
+  border-radius:20px;
+  padding:32px 24px;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+  animation:slideUp 0.3s ease;
+}
+
+@keyframes slideUp{
+  from{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* Loading Modal */
+.modal-loading{
+  padding:48px 24px;
+}
+
+.spinner{
+  width:50px;
+  height:50px;
+  border:4px solid #f0f0f0;
+  border-top-color:var(--gold);
+  border-radius:50%;
+  margin:0 auto 20px;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.modal-loading p{
+  margin:0;
+  color:var(--text);
+  font-weight:600;
+  font-size:14px;
+}
+
+/* Success Modal */
+.modal-success .success-icon{
+  width:60px;
+  height:60px;
+  background:#4caf50;
+  color:white;
+  font-size:36px;
+  font-weight:700;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 16px;
+}
+
+.modal-success h3{
+  margin:0 0 8px;
+  color:var(--text);
+  font-size:22px;
+}
+
+.modal-success p{
+  margin:0 0 24px;
+  color:var(--sub);
+  font-size:14px;
+}
+
+/* Quota Modal */
+.modal-quota h3{
+  margin:0 0 12px;
+  color:var(--text);
+  font-size:22px;
+}
+
+.modal-quota p{
+  margin:0 0 8px;
+  color:var(--sub);
+  font-size:14px;
+}
+
+.quota-hint{
+  background:#fff8e1;
+  border-left:4px solid var(--gold);
+  padding:16px;
+  margin:20px 0 24px;
+  border-radius:6px;
+  text-align:left;
+}
+
+.quota-hint p{
+  margin:0;
+  color:#5f4a21;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.quota-hint strong{
+  color:#4a3a1a;
+}
+
+/* Modal Button */
+.modal-btn{
+  border:none;
+  background:linear-gradient(135deg, var(--gold), var(--gold-dark));
+  color:white;
+  padding:12px 28px;
+  border-radius:500px;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.25s ease;
+  box-shadow:0 4px 15px rgba(200,169,107,0.25);
+}
+
+.modal-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(200,169,107,0.35);
+}
+
+.modal-btn:active{
+  transform:translateY(0);
 }
 
 
